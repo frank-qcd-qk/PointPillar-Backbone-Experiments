@@ -1,0 +1,97 @@
+# Use to store hyper parameter for training
+
+# datasource
+data_source: [ 'nuscenes' ]
+#data_source: [ 'lyft' ]
+lyft_droot: '/mnt/2TBRaid/Perception/lyft/train'
+nuscene_droot: '/mnt/2TBRaid/Perception/nuscene/Train'
+asrl_droot: ''
+
+# Backbone option = fpn, resnetv2, mobilenetv2, mobilenetv3_small, mobilenetv3_large, darknet53
+backbone: "darknet53"
+
+# voxels
+voxel_size: [ 0.1, 0.1, 5 ]
+point_cloud_range: [ -16.0, 0.0, -3.0, 16.0, 32.0, 2.0 ]
+max_num_points: 60
+max_voxels: 20000
+
+# nuscenes dataset parameters
+detection_classes: { 'pedestrian': 0 }  # class: one hot index
+iou_positive_thresholds: { 'pedestrian': 0.5 }
+iou_negative_thresholds: { 'pedestrian': 0.35 }
+feature_map_downsample_factor: 2
+
+# dataset prepare label
+negative_yaw_class: 0
+positive_yaw_class: 1
+negative_match_value: 1
+ignore_value: 0
+positive_match_value: 1
+
+# anchor boxes (w, l, h, z)
+pedestrian: [ 0.6634, 0.7256, 1.7575, -0.55 ]
+bicycle: [ 4, 5, 6, -1 ]
+car: [ 1.9502, 4.6072, 1.7227, -0.55 ] # wlh
+
+# anchor boxes
+box_code_size: 7
+anchor_per_point: 2
+
+# model
+use_deconv: True
+fpn_upsample_strides: [ 1, 2, 4 ]
+
+
+
+# dataset configuration
+samples_only: False
+nsweeps: 4
+min_distance: 2.2
+
+# training
+num_workers: 8
+batch_size: 4
+lr: 0.0002
+weight_decay: 0.0001
+nepochs: 30
+clip_norm: 1.0
+pos_weight: 5.0
+alpha: 0.5
+gamma: 2.0
+cls_loss_weight: 0.25
+loc_loss_weight: 0.5
+
+# Monitor
+print_cycle: 8
+log_cycle: 8
+viz_cycle: 1000
+save_cycle: 1000
+eval_cycle: 1000
+
+# Visualization
+viz_im_num: 4
+
+# Non Max Suppression
+nms_top: 128
+nms_iou: 0.2
+
+# Prediction
+pos_threshold: 0.2
+
+# Evaluation P/R
+eval_im_num: 6000
+iou_threshold: 0.2
+
+# Data augmentation
+data_transform: False
+drop_points_p: 0.05
+local_box_rot_lower: -0.15707963267948966 # -pi/20
+local_box_rot_upper: 0.15707963267948966 # pi/20
+local_trans_std: 0.25
+horizontal_flip_p: 0.5
+global_scale_lower: 0.95
+global_scale_upper: 1.05
+global_rot_lower: -0.7853981633974483  # -pi/4
+global_rot_upper: 0.7853981633974483  # pi/4
+global_trans_std: 0.2
